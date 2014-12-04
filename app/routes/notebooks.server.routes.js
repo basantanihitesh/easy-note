@@ -15,6 +15,9 @@ module.exports = function(app) {
 		.put(users.requiresLogin, notebooks.hasAuthorization, notebooks.update)
 		.delete(users.requiresLogin, notebooks.hasAuthorization, notebooks.delete);
 
+
+
 	// Finish by binding the Notebook middleware
 	app.param('notebookId', notebooks.notebookByID);
+
 };

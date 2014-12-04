@@ -87,7 +87,8 @@ exports.list = function(req, res) { Notebook.find().where('user', req.user.id).s
  * Notebook middleware
  */
 exports.notebookByID = function(req, res, next, id) { Notebook.findById(id).populate('user', 'displayName').exec(function(err, notebook) {
-		if (err) return next(err);
+
+	if (err) return next(err);
 		if (! notebook) return next(new Error('Failed to load Notebook ' + id));
 		req.notebook = notebook ;
 		next();
