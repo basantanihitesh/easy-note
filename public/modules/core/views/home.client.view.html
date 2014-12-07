@@ -1,0 +1,154 @@
+<section data-ng-controller="HomeController" data-ng-init="find()">
+    <h1>Easy Notes!!</h1>
+          <h4>            The easiest Noting App</h4>
+    <div class="row">
+
+        <div class="col-md-3 left-container">
+            <!-- TRIGGER MODAL -->
+            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#createNotebookModal">
+                New NoteBook
+            </button>
+
+            <!-- NOTEBOOK MODAL-->
+            <div class="modal fade" id="createNotebookModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                 aria-hidden="true">
+                <form name="notebookForm" role="form" novalidate autocomplete="off">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal"><span
+                                    aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                            <h4 class="modal-title" id="myModalLabel">New NoteBook</h4>
+                        </div>
+
+                        <div class="modal-body">
+
+                            <div class="form-group">
+                                <label for="notbooktitle">Notebook Title</label>
+                                <input type="text" name="title"  class="form-control" ng-required="true"  id="notbooktitle" data-ng-model="notebookTitle"
+
+                                       placeholder="Enter Notebook Title" >
+
+                            </div>
+
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary"  ng-disabled="notebookForm.title.$invalid"
+                             data-ng-click="newNotebook()" data-dismiss="modal">
+                                Save changes
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+                    </form>
+            </div>
+            <!-- END MODAL -->
+
+
+
+
+            <!---- LIST NOTEBOOKS ----->
+
+            <div id="collapseOne" class="panel-collapse collapse in">
+
+                <ul class="list-group">
+
+                <a href="#!" data-ng-repeat="notebook in notebooks" class="list-group-item"
+                data-ng-bind="notebook.name" data-ng-click="populateNotes(notebook._id)" >{{notebook.name}}
+                <i class="glyphicon glyphicon-play pull-right"></i>
+                <button data-ng-click="deleteNotebook(notebook)"
+                        class="glyphicon glyphicon-remove  pull-right"></button>
+
+                </a>
+                </ul>
+            </div>
+        </div>
+        <!-- NOTE LIST -->
+        <div class="col-md-3 mid-container">
+            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal"
+                     data-target="#createNoteModal">
+                New Note
+            </button>
+            <!---- LIST NOTES MODAL----->
+            <div class="modal fade" id="createNoteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                 aria-hidden="true">
+
+                <div class="modal-dialog">
+                    <div class="modal-content">
+
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal"><span
+                                    aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                            <h4 class="modal-title" id="myModalLabel">New Note</h4>
+                        </div>
+                        <form name="note" role="form" novalidate autocomplete="off">
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="sel1">Select Note Book </label>
+                                <select class="form-control" name ="notebook" ng-required="true" id = "sel1" data-ng-model="notebook" ng-options="notebook.name for notebook in notebooks track by notebook._id"
+                                        ng-required="true">
+
+
+                                        </select><br>
+
+                                <label for="notestitle">Note Title</label>
+                                <input type="text"  name="notetitle" ng-required="true" data-ng-model="noteTitle" class="form-control" id="notestitle">
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary"  ng-disabled="note.notetitle.$invalid && note.notebookTitle.$invalid"
+                                    data-ng-click="newNote()"data-dismiss="modal">
+                                Save changes
+                            </button>
+                        </div>
+                </form>
+                    </div>
+                </div>
+
+            </div>
+            <!-- END MODAL -->
+
+            <!-- DISPLAY NOTELIST HERE -->
+            <div id="collapseOne" class="panel-collapse collapse in">
+
+                <ul class="list-group">
+                    <a href="#!" class="list-group-item" data-ng-repeat="note in notes" data-content="{{note.content}}"
+                       data-ng-click="showNote($event,note._id)">
+                        {{note.name}}
+                        <i class="glyphicon glyphicon-play pull-right"></i>
+                        <button data-ng-click="deleteNote(note._id,note.notebookId)"
+                                class="glyphicon glyphicon-remove  pull-right"></button>
+                    </a>
+
+                </ul>
+
+            </div>
+
+
+        </div>
+
+        <!-- DISPLAY RICH TEXT EDITOR/ RIGHT CONTAINER -->
+        <div class="col-md-6 right-container">
+            <div text-angular="text-angular" name="htmlcontent" data-ng-model="htmlcontent"
+                 ta-disabled='disabled'></div>
+            <br>
+
+            <button class="btn btn-primary pull-right" data-ng-click="saveNote()">Save
+                <i class="glyphicon glyphicon-plus"></i>
+            </button>
+
+            <button class="btn btn-danger pull-right">Delete
+                <i class="glyphicon glyphicon-trash"></i>
+            </button>
+
+        </div>
+
+    </div>
+</section>
+
+
