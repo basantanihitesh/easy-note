@@ -137,7 +137,78 @@ public class EasyNoteController {
 		}
 		
 		
-		
-		
+		//2. Create Notes
+				@RequestMapping(value="/api/v1/notes",method = RequestMethod.POST)
+				@ResponseStatus(HttpStatus.CREATED)
+				@ResponseBody
+				public void createNotes(@Valid @RequestBody Note note) throws Exception
+				{	
+								
+					String title = note.getTitle();
+					String content = note.getContent();
+					String nbid = note.getNotebookid();
+					
+					Notebook nbname = mongoOperation.findOne(new Query(Criteria.where("id").is(nbid)), Notebook.class);
+					
+					UploadFile uploadFileChoreo = new UploadFile(session);
+
+					// Get an InputSet object for the choreo
+					UploadFileInputSet uploadFileInputs = uploadFileChoreo.newInputSet();
+					
+					byte[] encodednotecontent = Base64.encodeBase64(content.getBytes());
+					
+					uploadFileInputs.set_Folder("/EasyNotes/"+nbname.getName());
+					uploadFileInputs.set_AccessToken(accessToken);
+					uploadFileInputs.set_AppSecret(DROPBOX_APPKEYSECRET);
+					uploadFileInputs.set_FileName(title+".txt");
+					uploadFileInputs.set_AccessTokenSecret(accessTokenSecret);
+					uploadFileInputs.set_AppKey(DROPBOX_APPKEY);
+					uploadFileInputs.set_FileContents(new String(encodednotecontent));
+
+					// Execute Choreo
+					UploadFileResultSet uploadFileResults = uploadFileChoreo.execute(uploadFileInputs);
+				}
+				
+				//3. Delete notes
+				@RequestMapping(value="/api/v1/notes",method = RequestMethod.DELETE)
+				@ResponseStatus(HttpStatus.OK)
+				@ResponseBody
+				public void deleteNotes(@Valid @RequestBody Note note) throws Exception
+				{	
+								
+					String title = note.getTitle();
+					String nbid = note.getNotebookid();
+					String deletepath;
+					
+					Notebook nbname = mongoOperation.findOne(new Query(Criteria.where("id").is(nbid)), Notebook.class);
+					
+					
+					System.out.println(nbid);
+					System.out.println(nbname.getName());
+					System.out.println(title);
+					
+					if(title != null)
+						 deletepath = "/EasyNotes/"+nbname.getName()+"/"+title+".txt";
+					else
+						deletepath = "/EasyNotes/"+nbname.getName();
+					
+					System.out.println(deletepath);
+					
+					
+					DeleteFileOrFolder deleteFileOrFolderChoreo = new DeleteFileOrFolder(session);
+
+					// Get an InputSet object for the choreo
+					DeleteFileOrFolderInputSet deleteFileOrFolderInputs = deleteFileOrFolderChoreo.newInputSet();
+
+					// Set inputs
+					deleteFileOrFolderInputs.set_AppSecret(DROPBOX_APPKEYSECRET);
+					deleteFileOrFolderInputs.set_AccessToken(accessToken);
+					deleteFileOrFolderInputs.set_AccessTokenSecret(accessTokenSecret);
+					deleteFileOrFolderInputs.set_AppKey(DROPBOX_APPKEY);
+					deleteFileOrFolderInputs.set_Path(deletepath);
+
+					// Execute Choreo
+					DeleteFileOrFolderResultSet deleteFileOrFolderResults = deleteFileOrFolderChoreo.execute(deleteFileOrFolderInputs);
+				}
 
 }
