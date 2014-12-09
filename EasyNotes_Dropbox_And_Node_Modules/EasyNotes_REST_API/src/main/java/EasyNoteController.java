@@ -42,20 +42,35 @@ public class EasyNoteController {
 	
 	ApplicationContext ctx = new AnnotationConfigApplicationContext(SpringMongoConfig.class);
 	MongoOperations mongoOperation = (MongoOperations) ctx.getBean("mongoTemplate");
-	
 	TembooSession session;
-	final String DROPBOX_APPKEY = "nko2qsrvdy2k6xo";
-	final String DROPBOX_APPKEYSECRET = "lgf16chgslrv699";
-	String accessToken;
-	String accessTokenSecret;
 	{	
 	try
 	{
+	session = new TembooSession("easynotes", "myFirstApp", "803311a1eb9345d9932f9a3de103bd39");
+	}
+	catch(Exception e)
+	{}
+	}
+	final String DROPBOX_APPKEY = "2rzsjku5ywtaejq";
+	final String DROPBOX_APPKEYSECRET = "trc655astffa97y";
+	String accessToken;
+	String accessTokenSecret;
+	String callbackId;
+	String OAuthTokenSecret;
+		
+	FinalizeOAuth finalizeOAuthChoreo = new FinalizeOAuth(session);
+	// Get an InputSet object for the choreo
+	FinalizeOAuthInputSet finalizeOAuthInputs;
 	
-	
-	session = new TembooSession("basantanihitesh", "myFirstApp", "e96402e009d04097811ef02c411c28e2");
-
-	
+	//1. InitializeOAuth
+	@RequestMapping(value="/api/v1/initializeOAuth",method = RequestMethod.GET)
+	@ResponseStatus(HttpStatus.OK)
+	@ResponseBody
+	public String initializeDropbox() throws Exception
+	{
+	/*{
+	try
+	{*/
 	
 	InitializeOAuth initializeOAuthChoreo = new InitializeOAuth(session);
 
@@ -72,42 +87,25 @@ public class EasyNoteController {
 	
 	//Get Outputs
 	String authURL = initializeOAuthResults.get_AuthorizationURL();
-	String callbackId = initializeOAuthResults.get_CallbackID();
+	callbackId = initializeOAuthResults.get_CallbackID();
 	String OAuthTokenSecret = initializeOAuthResults.get_OAuthTokenSecret();
 	System.out.println("callbackId  "+callbackId);
 	System.out.println("OAuthTokenSecret  "+OAuthTokenSecret);
 	
-	System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"+authURL+"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
 	
-	 
+	System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"+authURL+"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");	
 	
-	FinalizeOAuth finalizeOAuthChoreo = new FinalizeOAuth(session);
-
-	// Get an InputSet object for the choreo
-	FinalizeOAuthInputSet finalizeOAuthInputs = finalizeOAuthChoreo.newInputSet();
+	finalizeOAuthInputs = finalizeOAuthChoreo.newInputSet();
 
 	// Set inputs
 	finalizeOAuthInputs.set_CallbackID(callbackId);
 	finalizeOAuthInputs.set_DropboxAppSecret(DROPBOX_APPKEYSECRET);
 	finalizeOAuthInputs.set_OAuthTokenSecret(OAuthTokenSecret);
 	finalizeOAuthInputs.set_DropboxAppKey(DROPBOX_APPKEY);
+	finalizeOAuthInputs.set_Timeout("60");
+		
 	
-	
-
-	// Execute Choreo
-	FinalizeOAuthResultSet finalizeOAuthResults = finalizeOAuthChoreo.execute(finalizeOAuthInputs);
-	accessToken = finalizeOAuthResults.get_AccessToken();
-	accessTokenSecret = finalizeOAuthResults.get_AccessTokenSecret();
-	
-	System.out.println("accessToken  "+accessToken);
-	System.out.println("accessTokenSecret  "+accessTokenSecret);
-	
-	
-	
-	}// end of try
-	catch(Exception e)
-	{}
-	
+	return authURL;
 	}
 	//1. Create Notebook
 		@RequestMapping(value="/api/v1/notebooks",method = RequestMethod.POST)
