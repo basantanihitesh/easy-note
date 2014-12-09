@@ -3,11 +3,17 @@
 /**
  * Module dependencies.
  */
+var _ = require('lodash'),
+	//errorHandler = require('../errors'),
+	mongoose = require('mongoose'),
+	User = mongoose.model('User');
+
 var passport = require('passport'),
 	url = require('url'),
 	FacebookStrategy = require('passport-facebook').Strategy,
 	config = require('../config'),
 	users = require('../../app/controllers/users');
+	User = mongoose.model('User');
 
 module.exports = function() {
 	// Use facebook strategy
@@ -19,6 +25,7 @@ module.exports = function() {
 		},
 		function(req, accessToken, refreshToken, profile, done) {
 			// Set the provider data and include tokens
+
 			var providerData = profile._json;
 			providerData.accessToken = accessToken;
 			providerData.refreshToken = refreshToken;
@@ -29,9 +36,9 @@ module.exports = function() {
 				lastName: profile.name.familyName,
 				displayName: profile.displayName,
 				email: profile.emails[0].value,
-				username: profile.username,
+				username: profile.emails[0].value,
 				provider: 'facebook',
-				providerIdentifierField: 'id',
+				providerIdentifierField: 'email',
 				providerData: providerData
 			};
 

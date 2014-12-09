@@ -59,6 +59,10 @@ var UserSchema = new Schema({
 		default: '',
 		validate: [validateLocalStrategyPassword, 'Password should be longer']
 	},
+	dropboxAuthenticated:{
+		type: Boolean,
+		default: false
+	},
 	salt: {
 		type: String
 	},

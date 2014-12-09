@@ -20,9 +20,14 @@ module.exports = {
 		js: 'public/dist/application.min.js'
 	},
 	facebook: {
-		clientID: process.env.FACEBOOK_ID || '157229447652022',
-		clientSecret: process.env.FACEBOOK_SECRET || 'e951e590474582ab6263097d57bb5768',
+		clientID: process.env.FACEBOOK_ID || 'CONSUMER_KEY',
+		clientSecret: process.env.FACEBOOK_SECRET || 'CONSUMER_SECRET',
 		callbackURL: 'http://localhost:3000/auth/facebook/callback'
+	},
+	dropbox: {
+		clientID: process.env.DROPBOX_ID || 'CONSUMER_KEY',
+		clientSecret: process.env.DROPBOX_SECRET || 'CONSUMER_SECRET',
+		callbackURL: 'http://localhost:3000/auth/dropbox/callback'
 	},
 	twitter: {
 		clientID: process.env.TWITTER_KEY || 'CONSUMER_KEY',

@@ -83,15 +83,17 @@ exports.signout = function(req, res) {
 exports.oauthCallback = function(strategy) {
 	return function(req, res, next) {
 		passport.authenticate(strategy, function(err, user, redirectURL) {
+			console.log('USER: ' +user + '\n err:' + err);
 			if (err || !user) {
 				return res.redirect('/#!/signin');
 			}
+			console.log(user);
 			req.login(user, function(err) {
 				if (err) {
 					return res.redirect('/#!/signin');
 				}
 
-				return res.redirect(redirectURL || '/');
+				return res.redirect(redirectURL || '/auth/dropbox');
 			});
 		})(req, res, next);
 	};
