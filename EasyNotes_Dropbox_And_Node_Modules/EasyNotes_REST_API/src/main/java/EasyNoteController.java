@@ -146,25 +146,50 @@ public class EasyNoteController {
 					String content = note.getContent();
 					String nbid = note.getNotebookid();
 					
+					System.out.println(title);
+					System.out.println(content);
+					System.out.println(nbid);
+					
 					Notebook nbname = mongoOperation.findOne(new Query(Criteria.where("id").is(nbid)), Notebook.class);
 					
 					UploadFile uploadFileChoreo = new UploadFile(session);
-
+					System.out.println("1");
 					// Get an InputSet object for the choreo
 					UploadFileInputSet uploadFileInputs = uploadFileChoreo.newInputSet();
-					
-					byte[] encodednotecontent = Base64.encodeBase64(content.getBytes());
-					
-					uploadFileInputs.set_Folder("/EasyNotes/"+nbname.getName());
-					uploadFileInputs.set_AccessToken(accessToken);
-					uploadFileInputs.set_AppSecret(DROPBOX_APPKEYSECRET);
-					uploadFileInputs.set_FileName(title+".txt");
-					uploadFileInputs.set_AccessTokenSecret(accessTokenSecret);
-					uploadFileInputs.set_AppKey(DROPBOX_APPKEY);
-					uploadFileInputs.set_FileContents(new String(encodednotecontent));
+					System.out.println("2");
 
+					if(content == null || "".equalsIgnoreCase(content))
+					{
+						System.out.println("3");
+						uploadFileInputs.set_Folder("/"+nbname.getName());
+						uploadFileInputs.set_AccessToken(accessToken);
+						uploadFileInputs.set_AppSecret(DROPBOX_APPKEYSECRET);
+						uploadFileInputs.set_FileName(title+".txt");
+						uploadFileInputs.set_AccessTokenSecret(accessTokenSecret);
+						uploadFileInputs.set_AppKey(DROPBOX_APPKEY);
+						uploadFileInputs.set_FileContents(" 	");
+						System.out.println("4");
+					}
+					else
+					{
+						System.out.println("5");
+						byte[] encodednotecontent = Base64.encodeBase64(content.getBytes());
+						
+						uploadFileInputs.set_Folder("/"+nbname.getName());
+						uploadFileInputs.set_AccessToken(accessToken);
+						uploadFileInputs.set_AppSecret(DROPBOX_APPKEYSECRET);
+						uploadFileInputs.set_FileName(title+".txt");
+						uploadFileInputs.set_AccessTokenSecret(accessTokenSecret);
+						uploadFileInputs.set_AppKey(DROPBOX_APPKEY);
+						uploadFileInputs.set_FileContents(new String(encodednotecontent));
+						System.out.println("6");
+
+					}
+					System.out.println("7");
 					// Execute Choreo
 					UploadFileResultSet uploadFileResults = uploadFileChoreo.execute(uploadFileInputs);
+					System.out.println("8");
+
 				}
 				
 				//3. Delete notes
