@@ -1,2 +1,2 @@
 ##Easynote
-Cmpe273 Team group 18
+Cmpe273 Team group 18 project
