@@ -19,7 +19,7 @@ angular.module('core').controller('HomeController', ['$scope', '$stateParams', '
             var note = new Notes({
                 name: this.noteTitle,
                 notebookId:  $scope.notebookId,
-                content: ''
+                content: ' '
             });
 
             note.$save(function (response) {
@@ -83,6 +83,7 @@ angular.module('core').controller('HomeController', ['$scope', '$stateParams', '
                     $scope.notes = data;
                 //alert('content: '+data);
                    // $scope.htmlcontent = data;
+
                 }).
                 error(function(data, status, headers, config) {
                     // called asynchronously if an error occurs
@@ -93,7 +94,7 @@ angular.module('core').controller('HomeController', ['$scope', '$stateParams', '
 
 
         $scope.deleteNote = function (noteId,notebookId) {
-            $http.delete('/notes/note/deletenote/' + noteId);
+            $http.delete('/notes/note/'+notebookId+'/deletenote/' + noteId);
             $scope.populateNotes(notebookId);
         };
 

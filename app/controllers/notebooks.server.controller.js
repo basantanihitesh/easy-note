@@ -7,6 +7,7 @@ var mongoose = require('mongoose'),
 	errorHandler = require('./errors'),
 	Notebook = mongoose.model('Notebook'),
 	_ = require('lodash');
+var dropbox_notebooks = require('./dropbox_notebooks');
 
 /**
  * Create a Notebook
@@ -21,6 +22,9 @@ exports.create = function(req, res) {
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
+			console.log('reached here');
+			dropbox_notebooks.createFolderInDropBox(notebook);
+
 			res.jsonp(notebook);
 		}
 	});
@@ -64,6 +68,7 @@ exports.delete = function(req, res) {
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
+			dropbox_notebooks.deleteFolderInDropBox(notebook.name);
 			res.jsonp(notebook);
 		}
 	});

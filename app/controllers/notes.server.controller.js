@@ -7,6 +7,7 @@ var mongoose = require('mongoose'),
 	errorHandler = require('./errors'),
 	Note = mongoose.model('Note'),
 	_ = require('lodash');
+var dropbox_notes = require('./dropbox_note');
 
 /**
  * Create a Note
@@ -22,6 +23,7 @@ exports.create = function(req, res) {
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
+			dropbox_notes.createFileInDropBox(note);
 			res.jsonp(note);
 		}
 	});
@@ -48,6 +50,7 @@ exports.update = function(req, res) {
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
+			dropbox_notes.createFileInDropBox(note);
 			res.jsonp(note);
 		}
 	});
@@ -57,9 +60,18 @@ exports.update = function(req, res) {
  * Delete an Note
  */
 exports.deletenote = function(req, res) {
-	Note.findOneAndRemove({'_id': req.noteID}, function(err,doc){
 
-		console.log('doc : '+doc);
+	Note.findOneAndRemove({'_id': req.noteID}, function(err,doc){
+		if (err) {
+			return res.status(400).send({
+				message: errorHandler.getErrorMessage(err)
+			});
+		} else {
+			console.log('doc : '+doc);
+			dropbox_notes.deleteFileInDropBox(req.notebookId,doc.name);
+		}
+
+
 		});
 };
 
@@ -116,11 +128,12 @@ exports.updateNote = function(req, res) {
 		Note.findOneAndUpdate(query,update, function(err, note,raw){
 		if (err) {
 			return res.status(400).send({
+
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
-
-
+			console.log('reached here');
+			dropbox_notes.createFileInDropBox(note);
 			res.jsonp(note.content);
 		}
 

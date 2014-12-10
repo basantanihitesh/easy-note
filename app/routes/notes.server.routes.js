@@ -24,7 +24,7 @@ module.exports = function(app) {
 	app.route('/notes/note/shownote/:noteID')
 		.get(notes.showNote);
 
-	app.route('/notes/note/deletenote/:noteID')
+	app.route('/notes/note/:notebookId/deletenote/:noteID')
 		.delete(notes.deletenote);
 
 	// Finish by binding the Note middleware
