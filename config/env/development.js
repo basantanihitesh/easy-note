@@ -11,8 +11,8 @@ module.exports = {
 		callbackURL: 'http://localhost:3000/auth/facebook/callback'
 	},
 	dropbox: {
-		clientID: process.env.DROPBOX_ID || 'CONSUMER_KEY',
-		clientSecret: process.env.DROPBOX_SECRET || 'CONSUMER_SECRET',
+		clientID: process.env.DROPBOX_ID || '2rzsjku5ywtaejq',
+		clientSecret: process.env.DROPBOX_SECRET || 'trc655astffa97y',
 		callbackURL: 'http://localhost:3000/auth/dropbox/callback'
 	},
 	twitter: {

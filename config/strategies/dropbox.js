@@ -15,16 +15,13 @@ var passport = require('passport'),
 module.exports = function() {
     // Use dropbox strategy
     passport.use(new DropboxOAuth2Strategy({
-            clientID: 'CONSUMER_KEY',
-            clientSecret: 'CONSUMER_SECRET',
+            clientID: config.dropbox.clientID,
+            clientSecret: config.dropbox.clientSecret,
             callbackURL: config.dropbox.callbackURL,
             passReqToCallback: true
         },
         function(req, accessToken, refreshToken, profile, done) {
             // Set the provider data and include tokens
-
-            console.log('TEST2' + profile.emails[0].value);
-
             var providerData = profile._json;
             providerData.accessToken = accessToken;
             providerData.refreshToken = refreshToken;

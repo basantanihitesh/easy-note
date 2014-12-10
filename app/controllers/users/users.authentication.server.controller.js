@@ -93,7 +93,7 @@ exports.oauthCallback = function(strategy) {
 					return res.redirect('/#!/signin');
 				}
 
-				return res.redirect(redirectURL || '/auth/dropbox');
+				return res.redirect(redirectURL || '/');
 			});
 		})(req, res, next);
 	};
