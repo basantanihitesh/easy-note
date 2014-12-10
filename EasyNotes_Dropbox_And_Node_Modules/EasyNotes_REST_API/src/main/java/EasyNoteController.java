@@ -180,7 +180,7 @@ public class EasyNoteController {
 		// Get an InputSet object for the choreo
 		UploadFileInputSet uploadFileInputs = uploadFileChoreo.newInputSet();
 		
-		if(content == null)
+		if(content == null || "".equalsIgnoreCase(content))
 		{
 		
 			uploadFileInputs.set_Folder("/"+nbname.getName());
