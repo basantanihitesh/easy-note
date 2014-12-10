@@ -52,26 +52,43 @@
 
             <!---- LIST NOTEBOOKS ----->
 
+
+
+
             <div id="collapseOne" class="panel-collapse collapse in">
 
                 <ul class="list-group">
 
-                <a href="#!" data-ng-repeat="notebook in notebooks" class="list-group-item"
-                data-ng-bind="notebook.name" data-ng-click="populateNotes(notebook._id)" >{{notebook.name}}
-                <i class="glyphicon glyphicon-play pull-right"></i>
-                <button data-ng-click="deleteNotebook(notebook)"
-                        class="glyphicon glyphicon-remove  pull-right"></button>
+                    <a href="#!" data-ng-repeat="notebook in notebooks" class="list-group-item"
+                       data-ng-bind="notebook.name" data-ng-click="populateNotes(notebook._id)" >{{notebook.name}}
+                        <i class="glyphicon glyphicon-play pull-right"></i>
+                        <button data-ng-click="deleteNotebook(notebook)"
+                                class="glyphicon glyphicon-remove  pull-right"></button>
 
-                </a>
+                    </a>
                 </ul>
             </div>
+
         </div>
         <!-- NOTE LIST -->
         <div class="col-md-3 mid-container">
-            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal"
-                     data-target="#createNoteModal">
-                New Note
-            </button>
+
+
+                <table >
+                    <tr>
+                        <td><div class="input-group input-group-sm">
+                            <input type="text" class="form-control" placeholder="Search Note" ng-model="notefilter.name">
+                        </div>
+                        </td>
+                        <td>            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal"
+                                                data-target="#createNoteModal">
+                            New Note
+                        </button>
+                        </td>
+                    </tr>
+                </table>
+
+
             <!---- LIST NOTES MODAL----->
             <div class="modal fade" id="createNoteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
                  aria-hidden="true">
@@ -117,7 +134,7 @@
             <div id="collapseOne" class="panel-collapse collapse in">
 
                 <ul class="list-group">
-                    <a href="#!" class="list-group-item" data-ng-repeat="note in notes" data-content="{{note.content}}"
+                    <a href="#!" class="list-group-item" data-ng-repeat="note in notes | filter:notefilter  | orderBy:orderProp" data-content="{{note.content}}"
                        data-ng-click="showNote($event,note._id)">
                         {{note.name}}
                         <i class="glyphicon glyphicon-play pull-right"></i>
@@ -128,6 +145,14 @@
                 </ul>
 
             </div>
+
+
+            
+                <label for="sel1">Sort by</label>
+                <select class="form-control" id="sel1"  ng-model="orderProp">
+                    <option value="name">Name</option>
+                    <option value="created">Newest</option>
+                </select>
 
 
         </div>
