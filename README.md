@@ -1,5 +1,5 @@
 ##Easynote
-Feature List: 
+##Feature List:  
 1. Create notebooks
 2. Delete notebooks
 3. Rename notebooks
