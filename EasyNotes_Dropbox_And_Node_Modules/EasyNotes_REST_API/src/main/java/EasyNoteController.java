@@ -241,8 +241,6 @@ public class EasyNoteController {
 		DeleteFileOrFolderResultSet deleteFileOrFolderResults = deleteFileOrFolderChoreo.execute(deleteFileOrFolderInputs);
 	}
 
-	
-}
 
 	//6. Delete notes
 	@RequestMapping(value="/api/v1/notes",method = RequestMethod.DELETE)
@@ -260,10 +258,7 @@ public class EasyNoteController {
 
 		String notename = objnote.getTitle();
 		String nbname = objnb.getName();
-		System.out.println(nbid);
-		System.out.println(nbname);
-		System.out.println(notename);
-
+		
 		DeleteFileOrFolder deleteFileOrFolderChoreo = new DeleteFileOrFolder(session);
 
 		// Get an InputSet object for the choreo
@@ -279,3 +274,6 @@ public class EasyNoteController {
 		// Execute Choreo
 		DeleteFileOrFolderResultSet deleteFileOrFolderResults = deleteFileOrFolderChoreo.execute(deleteFileOrFolderInputs);
 	}
+
+	
+}
