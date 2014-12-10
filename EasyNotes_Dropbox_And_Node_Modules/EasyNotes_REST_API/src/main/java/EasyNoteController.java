@@ -163,7 +163,55 @@ public class EasyNoteController {
 	}
 
 
+	//4. Create Notes
+	@RequestMapping(value="/api/v1/notes",method = RequestMethod.POST)
+	@ResponseStatus(HttpStatus.CREATED)
+	@ResponseBody
+	public void createNotes(@Valid @RequestBody Note note) throws Exception
+	{	
 
+		String title = note.getTitle();
+		String content = note.getContent();
+		String nbid = note.getNotebookid();
+
+		Notebook nbname = mongoOperation.findOne(new Query(Criteria.where("id").is(nbid)), Notebook.class);
+
+		UploadFile uploadFileChoreo = new UploadFile(session);
+		// Get an InputSet object for the choreo
+		UploadFileInputSet uploadFileInputs = uploadFileChoreo.newInputSet();
+		
+		if(content == null)
+		{
+		
+			uploadFileInputs.set_Folder("/"+nbname.getName());
+			uploadFileInputs.set_AccessToken(accessToken);
+			uploadFileInputs.set_AppSecret(DROPBOX_APPKEYSECRET);
+			uploadFileInputs.set_FileName(title+".txt");
+			uploadFileInputs.set_AccessTokenSecret(accessTokenSecret);
+			uploadFileInputs.set_AppKey(DROPBOX_APPKEY);
+			uploadFileInputs.set_FileContents(" ");
+		
+		}
+
+		else
+		{
+			String finalcontent = content.replaceAll("\\<[^>]*>","");
+			byte[] encodednotecontent = Base64.encodeBase64(finalcontent.getBytes());
+
+			uploadFileInputs.set_Folder("/"+nbname.getName());
+			uploadFileInputs.set_AccessToken(accessToken);
+			uploadFileInputs.set_AppSecret(DROPBOX_APPKEYSECRET);
+			uploadFileInputs.set_FileName(title+".txt");
+			uploadFileInputs.set_AccessTokenSecret(accessTokenSecret);
+			uploadFileInputs.set_AppKey(DROPBOX_APPKEY);
+			uploadFileInputs.set_FileContents(new String(encodednotecontent));
+			System.out.println("6");
+
+		}
+		UploadFileResultSet uploadFileResults = uploadFileChoreo.execute(uploadFileInputs);
+		
+
+	}
 
 
 	//5. Delete notebooks
@@ -195,3 +243,39 @@ public class EasyNoteController {
 
 	
 }
+
+	//6. Delete notes
+	@RequestMapping(value="/api/v1/notes",method = RequestMethod.DELETE)
+	@ResponseStatus(HttpStatus.OK)
+	@ResponseBody
+	public void deleteNotes(@Valid @RequestBody Note note) throws Exception
+	{	
+
+		String noteid = note.getId();
+		String nbid = note.getNotebookid();
+
+
+		Notebook objnb = mongoOperation.findOne(new Query(Criteria.where("id").is(nbid)), Notebook.class);
+		Note objnote = mongoOperation.findOne(new Query(Criteria.where("id").is(noteid)), Note.class);
+
+		String notename = objnote.getTitle();
+		String nbname = objnb.getName();
+		System.out.println(nbid);
+		System.out.println(nbname);
+		System.out.println(notename);
+
+		DeleteFileOrFolder deleteFileOrFolderChoreo = new DeleteFileOrFolder(session);
+
+		// Get an InputSet object for the choreo
+		DeleteFileOrFolderInputSet deleteFileOrFolderInputs = deleteFileOrFolderChoreo.newInputSet();
+
+		// Set inputs
+		deleteFileOrFolderInputs.set_AppSecret(DROPBOX_APPKEYSECRET);
+		deleteFileOrFolderInputs.set_AccessToken(accessToken);
+		deleteFileOrFolderInputs.set_AccessTokenSecret(accessTokenSecret);
+		deleteFileOrFolderInputs.set_AppKey(DROPBOX_APPKEY);
+		deleteFileOrFolderInputs.set_Path("/"+nbname+"/"+notename+".txt");
+
+		// Execute Choreo
+		DeleteFileOrFolderResultSet deleteFileOrFolderResults = deleteFileOrFolderChoreo.execute(deleteFileOrFolderInputs);
+	}
