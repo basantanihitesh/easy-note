@@ -78,7 +78,7 @@ public class EasyNoteController {
 		// Set inputs
 		initializeOAuthInputs.set_DropboxAppSecret(DROPBOX_APPKEYSECRET);
 		initializeOAuthInputs.set_DropboxAppKey(DROPBOX_APPKEY);
-		initializeOAuthInputs.set_ForwardingURL("http://localhost:3000");
+		initializeOAuthInputs.set_ForwardingURL("http://54.67.53.29:3000");
 
 		//Execute Choreo
 		InitializeOAuthResultSet initializeOAuthResults = initializeOAuthChoreo.execute(initializeOAuthInputs);
