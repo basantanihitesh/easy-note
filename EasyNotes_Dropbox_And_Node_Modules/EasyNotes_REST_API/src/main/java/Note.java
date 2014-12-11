@@ -17,22 +17,25 @@ public class Note implements Serializable {
 
 	@Id
 	private String id;
-	
-    private  String user_id;
-    
-    
+	@JsonIgnore
+	private  String user_id;
+
+
 	private  String title;
-    
-    private  String content;
-    
-    private  String notebookid;
-    private  String created;
-    
-    private  String updated;
-    private  String deleted;
-    private boolean active;
-    
-    public Note() {
+
+	private  String content;
+
+	private  String notebookid;
+	@JsonIgnore
+	private  String created;
+	@JsonIgnore
+	private  String updated;
+	@JsonIgnore
+	private  String deleted;
+	@JsonIgnore
+	private boolean active;
+
+	public Note() {
 		super();
 	}
 
@@ -122,10 +125,10 @@ public class Note implements Serializable {
 	public void setActive(boolean active) {
 		this.active = active;
 	}
-    
-    
-    
-    
-       
-    
+
 }
+
+
+
+
+

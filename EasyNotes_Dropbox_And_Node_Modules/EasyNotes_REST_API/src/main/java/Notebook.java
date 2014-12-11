@@ -17,15 +17,15 @@ public class Notebook implements Serializable {
 
 	@Id
 	private String id;
-	
-    private  String name;
+
+	private  String name;
 
 	public Notebook(String id, String name) {
 		super();
 		this.id = id;
 		this.name = name;
 	}
-	
+
 	public Notebook()
 	{}
 
@@ -44,12 +44,12 @@ public class Notebook implements Serializable {
 	public void setName(String name) {
 		this.name = name;
 	}
-    
-    
-	   
-    
-    
-    
-       
-    
+
+
+
+
+
+
+
+
 }
