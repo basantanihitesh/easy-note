@@ -8,6 +8,7 @@ angular.module('core').controller('HomeController', ['$scope', '$stateParams', '
         $scope.orightml = '';
         $scope.htmlcontent = $scope.orightml;
         $scope.disabled = false;
+        $scope.isDisabled = true;
 
         // ----------- NOTE STUFF ---------------//
 
@@ -19,13 +20,13 @@ angular.module('core').controller('HomeController', ['$scope', '$stateParams', '
             var note = new Notes({
                 name: this.noteTitle,
                 notebookId:  $scope.notebookId,
-                content: ' '
+                content: ''
             });
 
             note.$save(function (response) {
                 $location.path('/');
                 $scope.find();
-                $scope.notebookTitle = '';
+                $scope.notebook = '';
                 $scope.noteTitle='';
                 $scope.populateNotes( $scope.notebookId);
 
@@ -55,6 +56,8 @@ angular.module('core').controller('HomeController', ['$scope', '$stateParams', '
                     $http.get('/notes/populate/'+$scope.notebook_id).
                         success(function(data, status, headers, config) {
                             $scope.notes = data;
+                            $scope.isDisabled = false;
+                            
                         }).
                         error(function(data, status, headers, config) {
                             // called asynchronously if an error occurs
@@ -81,7 +84,8 @@ angular.module('core').controller('HomeController', ['$scope', '$stateParams', '
             $http.put('/notes/note/update/',note).
                 success(function(data, status, headers, config) {
                     $scope.notes = data;
-                //alert('content: '+data);
+                    $scope.isDisabled = true;
+                    //alert("Note Saved Successfully");
                    // $scope.htmlcontent = data;
 
                 }).
@@ -153,12 +157,27 @@ angular.module('core').controller('HomeController', ['$scope', '$stateParams', '
             $http.get('/notes/populate/' + notebookID).
                 success(function(data, status, headers, config) {
                     $scope.notes = data;
+                    $scope.isDisabled = true;
                 }).
                 error(function(data, status, headers, config) {
                     // called asynchronously if an error occurs
                     // or server returns response with an error status.
                 });
 
+
+        };
+
+
+
+        $scope.clearValues = function() {
+            $scope.notebook = '';
+            $scope.noteTitle='';
+
+        };
+
+        $scope.clearNoteBookForm = function() {
+
+            $scope.notebookTitle='';
 
         };
     }]);

@@ -76,7 +76,7 @@
                  ta-disabled='disabled'></div>
             <br>
 
-            <button class="btn btn-success pull-right" data-ng-click="saveNote()"><i class="glyphicon glyphicon-floppy-disk"></i> Save
+            <button class="btn btn-success pull-right" data-ng-click="saveNote()" ng-disabled="isDisabled" ng-model="isDisabled"><i class="glyphicon glyphicon-floppy-disk"></i> Save
 
             </button>
 
@@ -115,8 +115,8 @@
                     </div>
 
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary"  ng-disabled="note.notetitle.$invalid && note.notebookTitle.$invalid"
+                        <button type="button" class="btn btn-default" data-dismiss="modal"  data-ng-click="clearValues()>Close</button>
+                        <button type="button" class="btn btn-primary"  ng-disabled="note.notetitle.$invalid"
                                 data-ng-click="newNote()"data-dismiss="modal">
                             Save changes
                         </button>
